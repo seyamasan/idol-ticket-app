@@ -1,0 +1,1 @@
+# idol-ticket-app
