@@ -1,5 +1,9 @@
 package com.example.idolticketapplication.data
 
+import android.os.Parcelable
+import kotlinx.parcelize.Parcelize
+
+@Parcelize
 data class TicketData(
     val id: Int,
     val date: String,
@@ -8,7 +12,7 @@ data class TicketData(
     val genre: String,
     val idolName: String,
     val numberOfTickets: Int
-)
+) : Parcelable
 
 var demoTickets = listOf(
     TicketData(
