@@ -1,6 +1,8 @@
 plugins {
     alias(libs.plugins.android.application)
     alias(libs.plugins.jetbrains.kotlin.android)
+    alias(libs.plugins.compose.compiler)
+    alias(libs.plugins.kotlin.serialization)
 }
 
 android {
@@ -39,9 +41,6 @@ android {
     buildFeatures {
         compose = true
     }
-    composeOptions {
-        kotlinCompilerExtensionVersion = "1.5.1"
-    }
     packaging {
         resources {
             excludes += "/META-INF/{AL2.0,LGPL2.1}"
@@ -66,4 +65,19 @@ dependencies {
     androidTestImplementation(libs.androidx.ui.test.junit4)
     debugImplementation(libs.androidx.ui.tooling)
     debugImplementation(libs.androidx.ui.test.manifest)
+
+    // icons extended
+    implementation(libs.compose.material.icons.extended)
+
+    // navigation
+    implementation(libs.androidx.navigation.compose)
+
+    // serialization
+    implementation(libs.kotlinx.serialization.core)
+
+    // lifecycle-viewmodel-compose
+    implementation(libs.androidx.lifecycle.viewmodel.compose)
+
+    // livedata
+    implementation(libs.androidx.runtime.livedata)
 }
