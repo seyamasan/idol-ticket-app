@@ -23,12 +23,12 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import com.example.idolticketapplication.data.TicketData
+import com.example.idolticketapplication.room.OwnedTicketsEntity
 import com.example.idolticketapplication.ui.theme.IdolTicketApplicationTheme
 
 @Composable
 fun TicketCardView(
-    ticketDate: TicketData,
+    ticketDate: OwnedTicketsEntity,
     onClick: () -> Unit
 ) {
     BadgedBox(
@@ -87,7 +87,7 @@ fun TicketCardView(
                     style = MaterialTheme.typography.bodyLarge
                 )
                 Text(
-                    text = "Time: ${ticketDate.time}〜",
+                    text = "Time: ${ticketDate.startTime}〜",
                     style = MaterialTheme.typography.bodyLarge
                 )
                 Text(
@@ -135,14 +135,15 @@ fun TicketCardViewPreview() {
     IdolTicketApplicationTheme {
         // dummy data
         TicketCardView(
-            ticketDate = TicketData(
+            ticketDate = OwnedTicketsEntity(
                 id = 0,
                 date = "2025/04/01",
-                time = "17:00",
+                startTime = "17:00",
                 place = "タワーレコード渋谷店",
                 genre = "チェキ会",
                 idolName = "カミヤサキ",
-                numberOfTickets = 3
+                numberOfTickets = 3,
+                enable = true
             ),
             onClick = {}
         )

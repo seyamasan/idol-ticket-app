@@ -8,6 +8,7 @@ import kotlinx.serialization.Serializable
 
 class Screens {
     companion object {
+        // Bottomのタブで使いたいものだけ
         val screenList = listOf(
             OwnedTicketsView(),
             EventListView()
@@ -28,4 +29,9 @@ class Screens {
     data class EventListView (
         override val screenTitleResId: Int = R.string.event_list_screen_title
     ):ScreenData
+
+    @Serializable
+    data class CheckConsumeTicketView (
+        val consumption: Int = 0
+    )
 }

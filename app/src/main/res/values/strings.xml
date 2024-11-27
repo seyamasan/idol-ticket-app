@@ -9,4 +9,15 @@
 <!--    EventListView-->
     <string name="event_list_screen_title">Event List</string>
 
+<!--    CheckConsumeTicketView-->
+    <string name="ticket">ticket</string>
+    <string name="tickets">tickets</string>
+    <string name="check_consume_ticket_view_warning_1">Consume.</string>
+    <string name="check_consume_ticket_view_warning_2">Please tap the consumption button</string>
+    <string name="check_consume_ticket_view_warning_3">after checking with the staff.</string>
+    <string name="check_consume_ticket_view_consume">Consume</string>
+    <string name="check_consume_ticket_view_cancel">Cancel</string>
+    <string name="consume_dialog_title">Do you really consume it?</string>
+    <string name="consume_dialog_msg">If you perform this operation, you will be consuming the ticket.</string>
+
 </resources>

@@ -9,4 +9,15 @@
 <!--    EventListView-->
     <string name="event_list_screen_title">イベント一覧</string>
 
+<!--    CheckConsumeTicketView-->
+    <string name="ticket">枚</string>
+    <string name="tickets">枚</string>
+    <string name="check_consume_ticket_view_warning_1">消費します。</string>
+    <string name="check_consume_ticket_view_warning_2">係員の確認のもと</string>
+    <string name="check_consume_ticket_view_warning_3">消費ボタンをタップしてください。</string>
+    <string name="check_consume_ticket_view_consume">消費</string>
+    <string name="check_consume_ticket_view_cancel">キャンセル</string>
+    <string name="consume_dialog_title">本当に消費しますか？</string>
+    <string name="consume_dialog_msg">この操作を行うとチケットを消費したことになります。</string>
+
 </resources>

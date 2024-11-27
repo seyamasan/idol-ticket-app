@@ -3,6 +3,7 @@ plugins {
     alias(libs.plugins.jetbrains.kotlin.android)
     alias(libs.plugins.compose.compiler)
     alias(libs.plugins.kotlin.serialization)
+    alias(libs.plugins.ksp)
     id("kotlin-parcelize") // 独自の型をrememberで記憶しておくために必要。無いとクラッシュする。
 }
 
@@ -81,4 +82,14 @@ dependencies {
 
     // livedata
     implementation(libs.androidx.runtime.livedata)
+
+    // room
+    implementation(libs.room.runtime)
+    implementation(libs.room.ktx)
+    ksp(libs.room.compiler)
+
+    // koin
+    implementation(libs.koin.android)
+    implementation(libs.koin.androidx.compose)
+
 }

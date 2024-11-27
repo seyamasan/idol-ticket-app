@@ -1,5 +1,7 @@
 package com.example.idolticketapplication.ui
 
+import android.os.Build
+import androidx.annotation.RequiresApi
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.Arrangement
@@ -26,6 +28,8 @@ import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.material3.rememberModalBottomSheetState
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.mutableStateOf
@@ -41,24 +45,33 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavHostController
 import com.example.idolticketapplication.R
-import com.example.idolticketapplication.data.TicketData
-import com.example.idolticketapplication.data.demoTickets
+import com.example.idolticketapplication.room.OwnedTicketsEntity
+import com.example.idolticketapplication.screens.Screens
 import com.example.idolticketapplication.ui.common.BottomNavBarView
 import com.example.idolticketapplication.ui.common.TicketCardView
 import com.example.idolticketapplication.ui.common.TopBarView
 import com.example.idolticketapplication.ui.theme.IdolTicketApplicationTheme
+import com.example.idolticketapplication.viewmodel.OwnedTicketsViewModel
 import kotlinx.coroutines.launch
+import org.koin.androidx.compose.koinViewModel
 
+@RequiresApi(Build.VERSION_CODES.O)
 @Composable
 fun OwnedTicketsView(
+    viewModel: OwnedTicketsViewModel = koinViewModel(),
     navController: NavHostController?,
     screenTitle: String,
     selectedTab: Int,
-    onSelectedTab: (Int) -> Unit
+    onSelectedTab: (Int) -> Unit,
+    onCheck: (OwnedTicketsEntity) -> Unit
 ) {
-    var selectedTicketData by rememberSaveable { mutableStateOf<TicketData?>(null) }
+    var selectedTicketData by rememberSaveable { mutableStateOf<OwnedTicketsEntity?>(null) }
     var showBottomSheet by rememberSaveable { mutableStateOf(false) }
-    var tickets by rememberSaveable { mutableStateOf(demoTickets) }
+    val tickets by viewModel.tickets.collectAsState()
+
+    LaunchedEffect(Unit) {
+        viewModel.fetchAllItems()
+    }
 
     Scaffold(
         containerColor = MaterialTheme.colorScheme.background,
@@ -77,7 +90,7 @@ fun OwnedTicketsView(
                 .padding(top = 16.dp, start = 16.dp, end = 16.dp),
             verticalArrangement = Arrangement.spacedBy(32.dp)
         ) {
-            tickets.forEach {
+            tickets?.forEach {
                 item {
                     TicketCardView(
                         ticketDate = it,
@@ -97,14 +110,9 @@ fun OwnedTicketsView(
                     showBottomSheet = false
                     selectedTicketData = null
                 },
-                onChangeTicketData = { newData ->
-                    tickets = tickets.map { ticket ->
-                        if (ticket.id == newData.id) {
-                            newData
-                        } else {
-                            ticket
-                        }
-                    }
+                onConfirm = {
+                    onCheck(selectedTicketData!!)
+                    navController?.navigate(Screens.CheckConsumeTicketView(consumption = it))
                     selectedTicketData = null
                 }
             )
@@ -115,9 +123,9 @@ fun OwnedTicketsView(
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 private fun UseTheTicketSheet(
-    selectedTicketData: TicketData,
+    selectedTicketData: OwnedTicketsEntity,
     onDismissRequest: () -> Unit,
-    onChangeTicketData: (TicketData) -> Unit
+    onConfirm: (Int) -> Unit
 ) {
     val coroutineScope = rememberCoroutineScope()
     val sheetState = rememberModalBottomSheetState(skipPartiallyExpanded = false)
@@ -153,17 +161,7 @@ private fun UseTheTicketSheet(
                 onClick = {
                     coroutineScope.launch { sheetState.hide() }.invokeOnCompletion {
                         if (!sheetState.isVisible) {
-                            onChangeTicketData(
-                                TicketData(
-                                    id = selectedTicketData.id,
-                                    date = selectedTicketData.date,
-                                    time = selectedTicketData.time,
-                                    place = selectedTicketData.place,
-                                    genre = selectedTicketData.genre,
-                                    idolName = selectedTicketData.idolName,
-                                    numberOfTickets = selectedTicketData.numberOfTickets - consumption
-                                )
-                            )
+                            onConfirm(consumption)
                         }
                     }
                 }
@@ -251,6 +249,7 @@ private fun UseTheTicketSheet(
     }
 }
 
+@RequiresApi(Build.VERSION_CODES.O)
 @Preview(showBackground = true)
 @Composable
 fun OwnedTicketsViewPreview() {
@@ -259,7 +258,8 @@ fun OwnedTicketsViewPreview() {
             navController = null,
             screenTitle = stringResource(id = R.string.owned_tickets_screen_title),
             selectedTab = 0,
-            onSelectedTab = {}
+            onSelectedTab = {},
+            onCheck = {}
         )
     }
 }
