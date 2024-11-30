@@ -9,7 +9,7 @@
     <string name="genre_others">その他</string>
 
 <!--    OwnedTicketsView-->
-    <string name="owned_tickets_screen_title">保有チケット</string>
+    <string name="owned_tickets_screen_title">Myチケット</string>
     <string name="support_use_the_ticket">利用する枚数を入力してください。</string>
 
 <!--    EventListView-->

@@ -11,6 +11,7 @@ import androidx.navigation.toRoute
 import com.example.idolticketapplication.MainActivityViewModel
 import com.example.idolticketapplication.screens.Screens
 import com.example.idolticketapplication.ui.CheckConsumeTicketView
+import com.example.idolticketapplication.ui.EventDetailView
 import com.example.idolticketapplication.ui.EventListView
 import com.example.idolticketapplication.ui.OwnedTicketsView
 
@@ -28,6 +29,7 @@ class AppNavigatorImpl (
             // OwnedTicketsView
             composable<Screens.OwnedTicketsView> { backStackEntry ->
                 val ownedTicketsView: Screens.OwnedTicketsView = backStackEntry.toRoute()
+                viewModel.selectTab = 0
                 OwnedTicketsView(
                     navController = navController,
                     screenTitle = stringResource(id = ownedTicketsView.screenTitleResId),
@@ -40,11 +42,13 @@ class AppNavigatorImpl (
             // EventListView
             composable<Screens.EventListView> { backStackEntry ->
                 val eventListView: Screens.EventListView = backStackEntry.toRoute()
+                viewModel.selectTab = 1
                 EventListView(
                     navController = navController,
                     screenTitle = stringResource(id = eventListView.screenTitleResId),
                     selectedTab = viewModel.selectTab,
-                    onSelectedTab = { viewModel.selectTab = it }
+                    onSelectedTab = { viewModel.selectTab = it },
+                    onSelectedEvent = { viewModel.eventListEntity = it }
                 )
             }
 
@@ -55,6 +59,14 @@ class AppNavigatorImpl (
                     navController = navController,
                     ticket = viewModel.ownedTicketsEntity!!,
                     consumption = checkConsumeTicketView.consumption
+                )
+            }
+
+            // EventDetailView
+            composable<Screens.EventDetailView> {
+                EventDetailView(
+                    navController = navController,
+                    event = viewModel.eventListEntity!!
                 )
             }
         }

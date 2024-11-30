@@ -75,7 +75,12 @@ fun OwnedTicketsView(
 
     Scaffold(
         containerColor = MaterialTheme.colorScheme.background,
-        topBar = { TopBarView(screenTitle) },
+        topBar = {
+            TopBarView(
+                navController = navController,
+                title = screenTitle
+            )
+         },
         bottomBar = {
             BottomNavBarView(
                 navController = navController,

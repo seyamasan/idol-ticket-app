@@ -34,4 +34,7 @@ class Screens {
     data class CheckConsumeTicketView (
         val consumption: Int = 0
     )
+
+    @Serializable
+    object EventDetailView
 }

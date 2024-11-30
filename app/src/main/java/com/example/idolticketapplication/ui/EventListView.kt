@@ -2,6 +2,7 @@ package com.example.idolticketapplication.ui
 
 import android.os.Build
 import androidx.annotation.RequiresApi
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -38,6 +39,8 @@ import androidx.navigation.NavHostController
 import com.example.idolticketapplication.R
 import com.example.idolticketapplication.data.EventGenre
 import com.example.idolticketapplication.room.EventListEntity
+import com.example.idolticketapplication.room.OwnedTicketsEntity
+import com.example.idolticketapplication.screens.Screens
 import com.example.idolticketapplication.ui.common.BottomNavBarView
 import com.example.idolticketapplication.ui.common.TopBarView
 import com.example.idolticketapplication.ui.theme.IdolTicketApplicationTheme
@@ -51,7 +54,8 @@ fun EventListView(
     navController: NavHostController?,
     screenTitle: String,
     selectedTab: Int,
-    onSelectedTab: (Int) -> Unit
+    onSelectedTab: (Int) -> Unit,
+    onSelectedEvent: (EventListEntity) -> Unit
 ) {
     val events by viewModel.events.collectAsState()
 
@@ -61,7 +65,12 @@ fun EventListView(
 
     Scaffold(
         containerColor = MaterialTheme.colorScheme.background,
-        topBar = { TopBarView(screenTitle) },
+        topBar = {
+            TopBarView(
+                navController = navController,
+                title = screenTitle
+            )
+         },
         bottomBar = {
             BottomNavBarView(
                 navController = navController,
@@ -75,13 +84,22 @@ fun EventListView(
                 .fillMaxSize()
                 .padding(innerPadding)
         ) {
-            EventListByGenreWithCards(events)
+            EventListByGenreWithCards(
+                events = events,
+                onClick = {
+                    onSelectedEvent(it)
+                    navController?.navigate(Screens.EventDetailView)
+                }
+            )
         }
     }
 }
 
 @Composable
-private fun EventListByGenreWithCards(events: List<EventListEntity>?) {
+private fun EventListByGenreWithCards(
+    events: List<EventListEntity>?,
+    onClick: (EventListEntity) -> Unit
+) {
     // ジャンルごとにグループ化
     val eventsByGenre = events?.groupBy { it.genre }
 
@@ -107,7 +125,10 @@ private fun EventListByGenreWithCards(events: List<EventListEntity>?) {
                 ) {
                     events.forEach { event ->
                         item {
-                            EventCard(event = event)
+                            EventCard(
+                                event = event,
+                                onClick = { onClick(it) }
+                            )
                         }
                     }
                 }
@@ -117,12 +138,18 @@ private fun EventListByGenreWithCards(events: List<EventListEntity>?) {
 }
 
 @Composable
-private fun EventCard(event: EventListEntity) {
+private fun EventCard(
+    event: EventListEntity,
+    onClick: (EventListEntity) -> Unit
+) {
     ElevatedCard(
         modifier = Modifier
             .width(200.dp)
             .height(250.dp)
-            .padding(8.dp),
+            .padding(8.dp)
+            .clickable {
+                onClick(event)
+            },
         elevation = CardDefaults.elevatedCardElevation(8.dp)
     ) {
         Column(
@@ -177,7 +204,8 @@ fun EventListViewPreview() {
             navController = null,
             screenTitle = stringResource(id = R.string.event_list_screen_title),
             selectedTab = 1,
-            onSelectedTab = {}
+            onSelectedTab = {},
+            onSelectedEvent = {}
         )
     }
 }
