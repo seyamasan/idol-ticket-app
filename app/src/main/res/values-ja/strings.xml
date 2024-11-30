@@ -2,12 +2,18 @@
 <!--    App Name-->
     <string name="app_name">Idol Ticket Application</string>
 
+<!--    EventGenre-->
+    <string name="genre_live">ライブ</string>
+    <string name="genre_photo">チェキ会</string>
+    <string name="genre_handshake">握手会</string>
+    <string name="genre_others">その他</string>
+
 <!--    OwnedTicketsView-->
     <string name="owned_tickets_screen_title">保有チケット</string>
     <string name="support_use_the_ticket">利用する枚数を入力してください。</string>
 
 <!--    EventListView-->
-    <string name="event_list_screen_title">イベント一覧</string>
+    <string name="event_list_screen_title">イベント</string>
 
 <!--    CheckConsumeTicketView-->
     <string name="ticket">枚</string>

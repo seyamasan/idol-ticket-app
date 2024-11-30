@@ -4,19 +4,19 @@ import android.os.Build
 import androidx.annotation.RequiresApi
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.example.idolticketapplication.data.demoTickets
-import com.example.idolticketapplication.room.OwnedTicketsEntity
-import com.example.idolticketapplication.room.repository.OwnedTicketsRepository
+import com.example.idolticketapplication.data.demoEvents
+import com.example.idolticketapplication.room.EventListEntity
+import com.example.idolticketapplication.room.repository.EventListRepository
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 
-class OwnedTicketsViewModel(private val repository: OwnedTicketsRepository) : ViewModel() {
+class EventListViewModel(private val repository: EventListRepository) : ViewModel() {
 
-    private val _tickets = MutableStateFlow<List<OwnedTicketsEntity>?>(emptyList())
-    val tickets: StateFlow<List<OwnedTicketsEntity>?> get() = _tickets
+    private val _events = MutableStateFlow<List<EventListEntity>?>(emptyList())
+    val events: StateFlow<List<EventListEntity>?> get() = _events
 
     @RequiresApi(Build.VERSION_CODES.O)
     fun fetchAllItems() {
@@ -24,7 +24,7 @@ class OwnedTicketsViewModel(private val repository: OwnedTicketsRepository) : Vi
             val result = repository.selectAll()
             val sortedResult = result?.sortedBy { it.localDate } // 年月日をもとにソート
             withContext(Dispatchers.Main) {
-                _tickets.value = sortedResult
+                _events.value = sortedResult
             }
         }
     }
@@ -32,7 +32,7 @@ class OwnedTicketsViewModel(private val repository: OwnedTicketsRepository) : Vi
     // デモデータ挿入
     fun insertDummyData() {
         viewModelScope.launch(Dispatchers.IO) {
-            demoTickets.forEach { demo ->
+            demoEvents.forEach { demo ->
                 val result = repository.insert(
                     date = demo.date,
                     startTime = demo.startTime,
@@ -42,7 +42,9 @@ class OwnedTicketsViewModel(private val repository: OwnedTicketsRepository) : Vi
                     genre = demo.genre,
                     idolName = demo.idolName,
                     detail = demo.detail,
-                    numberOfTickets = demo.numberOfTickets,
+                    price = demo.price,
+                    stock = demo.stock,
+                    sold = demo.sold,
                     enable = demo.enable
                 )
                 if (result) {

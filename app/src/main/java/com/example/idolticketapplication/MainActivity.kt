@@ -10,15 +10,17 @@ import androidx.annotation.RequiresApi
 import androidx.navigation.compose.rememberNavController
 import com.example.idolticketapplication.navigator.AppNavigatorImpl
 import com.example.idolticketapplication.ui.theme.IdolTicketApplicationTheme
+import com.example.idolticketapplication.viewmodel.EventListViewModel
 import com.example.idolticketapplication.viewmodel.OwnedTicketsViewModel
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
 class MainActivity : ComponentActivity() {
 
     // ダミーデータ生成用
-//    private val dummyViewModel: OwnedTicketsViewModel by viewModel() // Koin から ViewModel を注入
+//    private val dummyViewModel1: OwnedTicketsViewModel by viewModel()
+//    private val dummyViewModel2: EventListViewModel by viewModel()
 
-    private val viewModel: MainActivityViewModel by viewModels()
+    private val viewModel: MainActivityViewModel by viewModels() // Koin から ViewModel を注入
 
     @RequiresApi(Build.VERSION_CODES.O)
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -35,6 +37,7 @@ class MainActivity : ComponentActivity() {
     }
 
 //    private fun createDummyData() {
-//        dummyViewModel.insertDummyData()
+//        dummyViewModel1.insertDummyData()
+//        dummyViewModel2.insertDummyData()
 //    }
 }

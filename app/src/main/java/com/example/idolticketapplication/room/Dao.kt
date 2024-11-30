@@ -19,3 +19,18 @@ interface OwnedTicketsDao {
     @Query("DELETE FROM owned_tickets_table")
     suspend fun deleteAll()
 }
+
+@Dao
+interface EventListDao {
+    @Insert
+    suspend fun insert(eventListEntity: EventListEntity)
+
+    @Update
+    suspend fun update(eventListEntity: EventListEntity)
+
+    @Query("SELECT * FROM event_list_table")
+    suspend fun selectAll(): List<EventListEntity>
+
+    @Query("DELETE FROM event_list_table")
+    suspend fun deleteAll()
+}

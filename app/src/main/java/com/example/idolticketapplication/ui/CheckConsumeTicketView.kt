@@ -148,9 +148,12 @@ fun CheckConsumeTicketView(
                             id = ticket.id,
                             date = ticket.date,
                             startTime = ticket.startTime,
+                            endTime = ticket.endTime,
                             place = ticket.place,
+                            eventName = ticket.eventName,
                             genre = ticket.genre,
                             idolName = ticket.idolName,
+                            detail = ticket.detail,
                             numberOfTickets = ticket.numberOfTickets - consumption,
                             enable = ticket.enable
                         )
@@ -179,9 +182,12 @@ fun CheckConsumeTicketViewPreview() {
                 id = 0,
                 date = "2025/04/01",
                 startTime = "17:00",
+                endTime = "18:00",
                 place = "タワーレコード渋谷店",
-                genre = "チェキ会",
+                eventName = "めっちゃチェキ会",
+                genre = 1,
                 idolName = "カミヤサキ",
+                detail = "カミヤサキと握手ができます。",
                 numberOfTickets = 3,
                 enable = true
             ),

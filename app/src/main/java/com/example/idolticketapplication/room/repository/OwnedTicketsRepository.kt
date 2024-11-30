@@ -1,4 +1,7 @@
-package com.example.idolticketapplication.room
+package com.example.idolticketapplication.room.repository
+
+import com.example.idolticketapplication.room.OwnedTicketsDao
+import com.example.idolticketapplication.room.OwnedTicketsEntity
 
 /*
 * owned_tickets_databaseのowned_tickets_tableを操作する
@@ -10,9 +13,12 @@ class OwnedTicketsRepository(private val ownedTicketsDao: OwnedTicketsDao) {
     suspend fun insert(
         date: String,
         startTime: String,
+        endTime: String,
         place: String,
-        genre: String,
+        eventName: String,
+        genre: Int,
         idolName: String,
+        detail: String,
         numberOfTickets: Int,
         enable: Boolean
     ): Boolean {
@@ -22,9 +28,12 @@ class OwnedTicketsRepository(private val ownedTicketsDao: OwnedTicketsDao) {
                     id = 0, // 自動的にIDを入れるときは0を入れる
                     date = date,
                     startTime = startTime,
+                    endTime = endTime,
                     place = place,
+                    eventName = eventName,
                     genre = genre,
                     idolName = idolName,
+                    detail = detail,
                     numberOfTickets = numberOfTickets,
                     enable = enable
                 )

@@ -19,10 +19,12 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import com.example.idolticketapplication.data.EventGenre
 import com.example.idolticketapplication.room.OwnedTicketsEntity
 import com.example.idolticketapplication.ui.theme.IdolTicketApplicationTheme
 
@@ -64,7 +66,7 @@ fun TicketCardView(
             ) {
                 // チケットタイトル
                 Text(
-                    text = "🎟️ ${ticketDate.genre}",
+                    text = "🎟️ ${ticketDate.eventName}",
                     style = MaterialTheme.typography.titleLarge.copy(
                         fontWeight = FontWeight.Bold
                     ),
@@ -87,11 +89,22 @@ fun TicketCardView(
                     style = MaterialTheme.typography.bodyLarge
                 )
                 Text(
-                    text = "Time: ${ticketDate.startTime}〜",
+                    text = "Time: ${ticketDate.startTime}〜${ticketDate.endTime}",
                     style = MaterialTheme.typography.bodyLarge
                 )
+                // 場所
                 Text(
                     text = "Place: ${ticketDate.place}",
+                    style = MaterialTheme.typography.bodyLarge
+                )
+                // ジャンル
+                Text(
+                    text = "Genre: ${stringResource(id = EventGenre.getStringResId(ticketDate.genre))}",
+                    style = MaterialTheme.typography.bodyLarge
+                )
+                // 詳細
+                Text(
+                    text = "Detail: ${ticketDate.detail}",
                     style = MaterialTheme.typography.bodyLarge
                 )
                 Spacer(modifier = Modifier.height(8.dp))
@@ -139,9 +152,12 @@ fun TicketCardViewPreview() {
                 id = 0,
                 date = "2025/04/01",
                 startTime = "17:00",
+                endTime = "18:00",
                 place = "タワーレコード渋谷店",
-                genre = "チェキ会",
+                eventName = "めっちゃチェキ会",
+                genre = 1,
                 idolName = "カミヤサキ",
+                detail = "カミヤサキと握手ができます。",
                 numberOfTickets = 3,
                 enable = true
             ),

@@ -2,12 +2,18 @@
 <!--    App Name-->
     <string name="app_name">Idol Ticket Application</string>
 
+<!--    EventGenre-->
+    <string name="genre_live">Live</string>
+    <string name="genre_photo">Photo Session</string>
+    <string name="genre_handshake">Handshake Event</string>
+    <string name="genre_others">Others</string>
+
 <!--    OwnedTicketsView-->
     <string name="owned_tickets_screen_title">Owned Tickets</string>
     <string name="support_use_the_ticket">Please enter the number of copies you wish to use.</string>
 
 <!--    EventListView-->
-    <string name="event_list_screen_title">Event List</string>
+    <string name="event_list_screen_title">Event</string>
 
 <!--    CheckConsumeTicketView-->
     <string name="ticket">ticket</string>

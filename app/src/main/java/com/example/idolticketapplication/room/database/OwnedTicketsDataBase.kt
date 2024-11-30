@@ -1,9 +1,11 @@
-package com.example.idolticketapplication.room
+package com.example.idolticketapplication.room.database
 
 import android.content.Context
 import androidx.room.Database
 import androidx.room.Room
 import androidx.room.RoomDatabase
+import com.example.idolticketapplication.room.OwnedTicketsDao
+import com.example.idolticketapplication.room.OwnedTicketsEntity
 
 @Database(entities = [OwnedTicketsEntity::class], version = 1, exportSchema = false)
 abstract class OwnedTicketsDataBase: RoomDatabase() {
