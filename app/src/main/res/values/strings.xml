@@ -26,4 +26,13 @@
     <string name="consume_dialog_title">Do you really consume it?</string>
     <string name="consume_dialog_msg">If you perform this operation, you will be consuming the ticket.</string>
 
+    <!--    EventDetailView-->
+    <string name="buy_now">Buy Now</string>
+    <string name="support_buy_msg">Please select the number of copies you wish to purchase.</string>
+    <string name="how_to_buy">How to buy</string>
+
+<!--    EventStatusChipView-->
+    <string name="status_now_accepting">Now Accepting</string>
+    <string name="status_closed">Closed</string>
+
 </resources>

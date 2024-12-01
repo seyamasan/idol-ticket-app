@@ -39,7 +39,6 @@ import androidx.navigation.NavHostController
 import com.example.idolticketapplication.R
 import com.example.idolticketapplication.data.EventGenre
 import com.example.idolticketapplication.room.EventListEntity
-import com.example.idolticketapplication.room.OwnedTicketsEntity
 import com.example.idolticketapplication.screens.Screens
 import com.example.idolticketapplication.ui.common.BottomNavBarView
 import com.example.idolticketapplication.ui.common.TopBarView

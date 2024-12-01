@@ -26,4 +26,13 @@
     <string name="consume_dialog_title">本当に消費しますか？</string>
     <string name="consume_dialog_msg">この操作を行うとチケットを消費したことになります。</string>
 
+<!--    EventDetailView-->
+    <string name="buy_now">購入する</string>
+    <string name="support_buy_msg">購入する枚数を選択してください。</string>
+    <string name="how_to_buy">購入方法</string>
+
+<!--    EventStatusChipView-->
+    <string name="status_now_accepting">受付中</string>
+    <string name="status_closed">受付終了</string>
+
 </resources>

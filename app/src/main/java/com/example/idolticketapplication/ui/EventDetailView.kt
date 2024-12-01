@@ -1,34 +1,70 @@
 package com.example.idolticketapplication.ui
 
+import androidx.compose.foundation.background
+import androidx.compose.foundation.border
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.shape.CircleShape
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Add
 import androidx.compose.material.icons.filled.BrokenImage
+import androidx.compose.material.icons.filled.Check
+import androidx.compose.material.icons.filled.Close
+import androidx.compose.material.icons.filled.Remove
+import androidx.compose.material3.Button
+import androidx.compose.material3.CardDefaults
+import androidx.compose.material3.ElevatedCard
+import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Icon
+import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.ModalBottomSheet
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
+import androidx.compose.material3.rememberModalBottomSheetState
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableIntStateOf
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.rememberCoroutineScope
+import androidx.compose.runtime.saveable.rememberSaveable
+import androidx.compose.runtime.setValue
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import androidx.navigation.NavHostController
+import com.example.idolticketapplication.R
 import com.example.idolticketapplication.room.EventListEntity
+import com.example.idolticketapplication.ui.common.EventStatusChipView
 import com.example.idolticketapplication.ui.common.TopBarView
 import com.example.idolticketapplication.ui.theme.IdolTicketApplicationTheme
+import kotlinx.coroutines.launch
+import java.util.Locale
 
 @Composable
 fun EventDetailView(
     navController: NavHostController?,
     event: EventListEntity
 ) {
+    var showBottomSheet by rememberSaveable { mutableStateOf(false) }
+
     Scaffold(
         containerColor = MaterialTheme.colorScheme.background,
         topBar = {
@@ -45,24 +81,30 @@ fun EventDetailView(
                 .padding(innerPadding)
                 .verticalScroll(rememberScrollState())
                 .padding(16.dp),
-            verticalArrangement = Arrangement.spacedBy(24.dp)
+            verticalArrangement = Arrangement.spacedBy(12.dp)
         ) {
-            // 画像入る予定。無い場合は以下のアイコンとか。
-            Icon(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .height(200.dp)
-                    .clip(MaterialTheme.shapes.medium),
-                imageVector = Icons.Default.BrokenImage,
-                contentDescription = "BrokenImage icon"
-            )
+            Column {
+                // 画像入る予定。無い場合は以下のアイコンとか。
+                Icon(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .height(200.dp)
+                        .clip(MaterialTheme.shapes.medium),
+                    imageVector = Icons.Default.BrokenImage,
+                    contentDescription = "BrokenImage icon"
+                )
 
-            // イベント名
-            Text(
-                text = event.eventName,
-                style = MaterialTheme.typography.bodyLarge,
-                color = MaterialTheme.colorScheme.primary
-            )
+                // イベント名
+                Text(
+                    text = event.eventName,
+                    style = MaterialTheme.typography.titleLarge.copy(
+                        fontWeight = FontWeight.Bold
+                    ),
+                    color = MaterialTheme.colorScheme.primary
+                )
+
+                EventStatusChipView(enable = event.enable)
+            }
 
             HorizontalDivider(
                 color = Color.Gray,
@@ -71,42 +113,267 @@ fun EventDetailView(
                     .fillMaxWidth()
             )
 
-            // 日時
             Text(
-                text = event.date,
+                text = "Date",
+                style = MaterialTheme.typography.titleLarge.copy(
+                    fontWeight = FontWeight.Bold
+                ),
+                color = MaterialTheme.colorScheme.secondary
+            )
+
+            Row(horizontalArrangement = Arrangement.spacedBy(12.dp)) {
+                // 日時
+                Text(
+                    text = event.date,
+                    style = MaterialTheme.typography.bodyMedium,
+                    color = MaterialTheme.colorScheme.secondary
+                )
+                Text(
+                    text = "${event.startTime}〜${event.endTime}",
+                    style = MaterialTheme.typography.bodyMedium,
+                    color = MaterialTheme.colorScheme.secondary
+                )
+            }
+
+            Text(
+                text = "Place",
+                style = MaterialTheme.typography.titleLarge.copy(
+                    fontWeight = FontWeight.Bold
+                ),
+                color = MaterialTheme.colorScheme.secondary
+            )
+
+            // 場所
+            Text(
+                text = event.place,
                 style = MaterialTheme.typography.bodyMedium,
                 color = MaterialTheme.colorScheme.secondary
             )
+
             Text(
-                text = "${event.startTime}〜${event.endTime}",
-                style = MaterialTheme.typography.bodySmall,
+                text = "Idol",
+                style = MaterialTheme.typography.titleLarge.copy(
+                    fontWeight = FontWeight.Bold
+                ),
                 color = MaterialTheme.colorScheme.secondary
             )
 
             // アイドル名
             Text(
                 text = event.idolName,
-                style = MaterialTheme.typography.bodySmall,
+                style = MaterialTheme.typography.bodyMedium,
+                color = MaterialTheme.colorScheme.secondary
+            )
+
+            Text(
+                text = "Detail",
+                style = MaterialTheme.typography.titleLarge.copy(
+                    fontWeight = FontWeight.Bold
+                ),
                 color = MaterialTheme.colorScheme.secondary
             )
 
             // 詳細
             Text(
                 text = event.detail,
-                style = MaterialTheme.typography.bodySmall,
+                style = MaterialTheme.typography.bodyMedium,
                 color = MaterialTheme.colorScheme.secondary
             )
 
-            // 価格
-            Text(
-                text = event.price.toString(),
-                style = MaterialTheme.typography.bodySmall,
-                color = MaterialTheme.colorScheme.secondary
+            Box(
+                modifier = Modifier
+                    .padding(32.dp)
+                    .fillMaxWidth(),
+                contentAlignment = Alignment.Center
+            ) {
+                Button(onClick = { showBottomSheet = true }) {
+                    Text(text = stringResource(id = R.string.buy_now))
+                }
+            }
+        }
+
+        if (showBottomSheet) {
+            BuyTheTicketSheet(
+                event = event,
+                onDismissRequest = { showBottomSheet = false },
+                onConfirm = {
+                    showBottomSheet = false
+                    print(it)
+                }
             )
         }
     }
 }
 
+@OptIn(ExperimentalMaterial3Api::class)
+@Composable
+private fun BuyTheTicketSheet(
+    event: EventListEntity,
+    onDismissRequest: () -> Unit,
+    onConfirm: (Int) -> Unit
+) {
+    val coroutineScope = rememberCoroutineScope()
+    val sheetState = rememberModalBottomSheetState(skipPartiallyExpanded = false)
+    var buy by rememberSaveable { mutableIntStateOf(0) }
+
+    ModalBottomSheet(
+        sheetState = sheetState,
+        onDismissRequest = onDismissRequest
+    ) {
+        Row(
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(horizontal = 16.dp),
+            horizontalArrangement = Arrangement.SpaceBetween,
+            verticalAlignment = Alignment.CenterVertically
+        ) {
+            IconButton(
+                onClick = {
+                    coroutineScope.launch { sheetState.hide() }.invokeOnCompletion {
+                        if (!sheetState.isVisible) {
+                            onDismissRequest()
+                        }
+                    }
+                }
+            ) {
+                Icon(
+                    imageVector = Icons.Default.Close,
+                    contentDescription = "Check icon"
+                )
+            }
+
+            IconButton(
+                onClick = {
+                    coroutineScope.launch { sheetState.hide() }.invokeOnCompletion {
+                        if (!sheetState.isVisible) {
+                            onConfirm(buy)
+                        }
+                    }
+                }
+            ) {
+                Icon(
+                    imageVector = Icons.Default.Check,
+                    contentDescription = "Check icon"
+                )
+            }
+        }
+
+        Column(
+            modifier = Modifier
+                .verticalScroll(rememberScrollState())
+                .fillMaxWidth()
+                .padding(16.dp),
+            verticalArrangement = Arrangement.spacedBy(32.dp),
+            horizontalAlignment = Alignment.CenterHorizontally
+        ) {
+            ElevatedCard(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .clickable {},
+                elevation = CardDefaults.cardElevation(8.dp)
+            ) {
+                Column(
+                    modifier = Modifier
+                        .padding(16.dp)
+                        .fillMaxWidth()
+                ) {
+                    Text(
+                        text = stringResource(id = R.string.how_to_buy),
+                        style = MaterialTheme.typography.titleLarge.copy(
+                            fontWeight = FontWeight.Bold
+                        ),
+                        color = MaterialTheme.colorScheme.primary,
+                        modifier = Modifier.padding(bottom = 8.dp)
+                    )
+
+                    HorizontalDivider(
+                        color = Color.Gray,
+                        thickness = 1.dp,
+                        modifier = Modifier
+                            .fillMaxWidth()
+                    )
+
+                    Text(
+                        text = "クレジットカード(VISA)",
+                        style = MaterialTheme.typography.bodyLarge
+                    )
+
+                    Text(
+                        text = "XXXX",
+                        style = MaterialTheme.typography.bodySmall
+                    )
+                }
+            }
+
+            Text(text = stringResource(id = R.string.support_buy_msg))
+
+            Text(
+                text = "${String.format(Locale.US, "%,d", event.price)}円",
+                style = MaterialTheme.typography.bodyLarge.copy(fontSize = 48.sp)
+            )
+
+            Row(
+                horizontalArrangement = Arrangement.Center,
+                verticalAlignment = Alignment.CenterVertically
+            ) {
+                Box(
+                    modifier = Modifier
+                        .padding(end = 16.dp)
+                        .border(1.dp, Color.Gray, shape = RoundedCornerShape(8.dp))
+                        .padding(horizontal = 16.dp, vertical = 8.dp)
+                ) {
+                    Text(
+                        text = buy.toString(),
+                        style = MaterialTheme.typography.bodyLarge.copy(fontSize = 96.sp),
+                        color = MaterialTheme.colorScheme.onSurface
+                    )
+                }
+
+                Column(
+                    verticalArrangement = Arrangement.spacedBy(16.dp)
+                ) {
+                    IconButton(
+                        onClick = {
+                            if (buy + 1 <= event.stock) {
+                                buy += 1
+                            }
+                        }
+                    ) {
+                        Icon(
+                            imageVector = Icons.Default.Add,
+                            contentDescription = "Add icon",
+                            tint = Color.White,
+                            modifier = Modifier
+                                .size(64.dp)
+                                .background(Color.Green, shape = CircleShape)
+                                .padding(8.dp)
+                        )
+                    }
+
+                    IconButton(
+                        onClick = {
+                            if (buy - 1 >= 0) {
+                                buy -= 1
+                            }
+                        }
+                    ) {
+                        Icon(
+                            imageVector = Icons.Default.Remove,
+                            contentDescription = "Remove icon",
+                            tint = Color.White,
+                            modifier = Modifier
+                                .size(64.dp)
+                                .background(Color.Red, shape = CircleShape)
+                                .padding(8.dp)
+                        )
+                    }
+                }
+            }
+        }
+    }
+}
+
+@Preview(showBackground = true)
 @Composable
 fun EventDetailViewPreview() {
     IdolTicketApplicationTheme {
