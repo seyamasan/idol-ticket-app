@@ -52,6 +52,7 @@ import androidx.compose.ui.unit.sp
 import androidx.navigation.NavHostController
 import com.example.idolticketapplication.R
 import com.example.idolticketapplication.room.EventListEntity
+import com.example.idolticketapplication.screens.Screens
 import com.example.idolticketapplication.ui.common.EventStatusChipView
 import com.example.idolticketapplication.ui.common.TopBarView
 import com.example.idolticketapplication.ui.theme.IdolTicketApplicationTheme
@@ -198,7 +199,7 @@ fun EventDetailView(
                 onDismissRequest = { showBottomSheet = false },
                 onConfirm = {
                     showBottomSheet = false
-                    print(it)
+                    navController?.navigate(Screens.BuyView(buy = it))
                 }
             )
         }

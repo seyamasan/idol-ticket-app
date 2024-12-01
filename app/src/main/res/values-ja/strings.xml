@@ -35,4 +35,12 @@
     <string name="status_now_accepting">受付中</string>
     <string name="status_closed">受付終了</string>
 
+<!--    BuyView-->
+    <string name="buy_view_screen_title">購入確認</string>
+    <string name="settlement">決済</string>
+    <string name="buy_view_text_1">購入します。</string>
+    <string name="buy_view_text_2">枚数を確認の上、</string>
+    <string name="buy_view_text_3">購入ボタンをタップしてください。</string>
+    <string name="confirmation_of_details">購入チケットの詳細を確認する</string>
+
 </resources>

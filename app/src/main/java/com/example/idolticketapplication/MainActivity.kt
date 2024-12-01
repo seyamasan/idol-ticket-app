@@ -37,7 +37,7 @@ class MainActivity : ComponentActivity() {
     }
 
 //    private fun createDummyData() {
-//        dummyViewModel1.insertDummyData()
+////        dummyViewModel1.insertDummyData()
 //        dummyViewModel2.insertDummyData()
 //    }
 }

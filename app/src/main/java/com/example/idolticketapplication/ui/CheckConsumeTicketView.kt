@@ -5,10 +5,13 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Warning
 import androidx.compose.material3.Button
@@ -57,118 +60,118 @@ fun CheckConsumeTicketView(
     Scaffold(
         containerColor = MaterialTheme.colorScheme.background
     ) { innerPadding ->
-        LazyColumn(
-            modifier = Modifier.padding(innerPadding),
+        Column(
+            modifier = Modifier
+                .padding(innerPadding)
+                .verticalScroll(rememberScrollState()),
             horizontalAlignment = Alignment.CenterHorizontally,
-            verticalArrangement = Arrangement.spacedBy(48.dp)
+            verticalArrangement = Arrangement.Center
         ) {
-            item {
-                TicketCardView(
-                    ticketDate = ticket,
-                    onClick = {}
-                )
-            }
+            TicketCardView(
+                ticketDate = ticket,
+                onClick = {}
+            )
 
-            item {
-                Row(
-                    verticalAlignment = Alignment.CenterVertically
+            Spacer(modifier = Modifier.height(56.dp))
+
+            Row(
+                verticalAlignment = Alignment.CenterVertically
+            ) {
+                Box(
+                    modifier = Modifier
+                        .padding(end = 16.dp)
+                        .border(1.dp, Color.Gray, shape = RoundedCornerShape(8.dp))
+                        .padding(horizontal = 16.dp, vertical = 8.dp)
                 ) {
-                    Box(
-                        modifier = Modifier
-                            .padding(end = 16.dp)
-                            .border(1.dp, Color.Gray, shape = RoundedCornerShape(8.dp))
-                            .padding(horizontal = 16.dp, vertical = 8.dp)
-                    ) {
-                        Text(
-                            text = consumption.toString(),
-                            style = MaterialTheme.typography.bodyLarge.copy(fontSize = 48.sp),
-                            color = MaterialTheme.colorScheme.onSurface
-                        )
-                    }
-
                     Text(
-                        text = ticketString,
-                        style = MaterialTheme.typography.bodyLarge.copy(fontSize = 24.sp),
+                        text = consumption.toString(),
+                        style = MaterialTheme.typography.bodyLarge.copy(fontSize = 48.sp),
                         color = MaterialTheme.colorScheme.onSurface
                     )
                 }
+
+                Text(
+                    text = ticketString,
+                    style = MaterialTheme.typography.bodyLarge.copy(fontSize = 24.sp),
+                    color = MaterialTheme.colorScheme.onSurface
+                )
             }
 
-            item {
-                Column(modifier = Modifier
-                    .fillMaxWidth(),
-                    verticalArrangement = Arrangement.Center,
-                    horizontalAlignment = Alignment.CenterHorizontally
+            Spacer(modifier = Modifier.height(56.dp))
+
+            Column(modifier = Modifier
+                .fillMaxWidth(),
+                verticalArrangement = Arrangement.Center,
+                horizontalAlignment = Alignment.CenterHorizontally
+            ) {
+                Text(stringResource(id = R.string.check_consume_ticket_view_warning_1))
+                Text(stringResource(id = R.string.check_consume_ticket_view_warning_2))
+                Text(stringResource(id = R.string.check_consume_ticket_view_warning_3))
+            }
+
+            Spacer(modifier = Modifier.height(56.dp))
+
+            Row(
+                verticalAlignment = Alignment.CenterVertically,
+                horizontalArrangement = Arrangement.spacedBy(32.dp)
+            ) {
+                Button(
+                    colors = ButtonDefaults.buttonColors(
+                        containerColor = Color.Gray,
+                        contentColor = Color.White
+                    ),
+                    onClick = {
+                        navController?.popBackStack()
+                    }
                 ) {
-                    Text(stringResource(id = R.string.check_consume_ticket_view_warning_1))
-                    Text(stringResource(id = R.string.check_consume_ticket_view_warning_2))
-                    Text(stringResource(id = R.string.check_consume_ticket_view_warning_3))
+                    Text(stringResource(id = R.string.check_consume_ticket_view_cancel))
                 }
-            }
 
-            item {
-                Row(
-                    verticalAlignment = Alignment.CenterVertically,
-                    horizontalArrangement = Arrangement.spacedBy(32.dp)
+                Button(
+                    colors = ButtonDefaults.buttonColors(
+                        containerColor = Color.Red,
+                        contentColor = Color.White
+                    ),
+                    onClick = {
+                        showConsumeDialog = true
+                    }
                 ) {
-                    Button(
-                        colors = ButtonDefaults.buttonColors(
-                            containerColor = Color.Gray,
-                            contentColor = Color.White
-                        ),
-                        onClick = {
-                            navController?.popBackStack()
-                        }
-                    ) {
-                        Text(stringResource(id = R.string.check_consume_ticket_view_cancel))
-                    }
-
-                    Button(
-                        colors = ButtonDefaults.buttonColors(
-                            containerColor = Color.Red,
-                            contentColor = Color.White
-                        ),
-                        onClick = {
-                            showConsumeDialog = true
-                        }
-                    ) {
-                        Text(stringResource(id = R.string.check_consume_ticket_view_consume))
-                    }
+                    Text(stringResource(id = R.string.check_consume_ticket_view_consume))
                 }
             }
         }
+    }
 
-        if (showConsumeDialog) {
-            ConsumeAlertDialogExample(
-                onDismissRequest = { showConsumeDialog = false },
-                onConsume = {
-                    showConsumeDialog = false
-                    viewModel.update(
-                        OwnedTicketsEntity(
-                            id = ticket.id,
-                            date = ticket.date,
-                            startTime = ticket.startTime,
-                            endTime = ticket.endTime,
-                            place = ticket.place,
-                            eventName = ticket.eventName,
-                            genre = ticket.genre,
-                            idolName = ticket.idolName,
-                            detail = ticket.detail,
-                            numberOfTickets = ticket.numberOfTickets - consumption,
-                            enable = ticket.enable
-                        )
+    if (showConsumeDialog) {
+        ConsumeAlertDialogExample(
+            onDismissRequest = { showConsumeDialog = false },
+            onConsume = {
+                showConsumeDialog = false
+                viewModel.update(
+                    OwnedTicketsEntity(
+                        id = ticket.id,
+                        date = ticket.date,
+                        startTime = ticket.startTime,
+                        endTime = ticket.endTime,
+                        place = ticket.place,
+                        eventName = ticket.eventName,
+                        genre = ticket.genre,
+                        idolName = ticket.idolName,
+                        detail = ticket.detail,
+                        numberOfTickets = ticket.numberOfTickets - consumption,
+                        enable = ticket.enable
                     )
-                },
-                dialogTitle = stringResource(id = R.string.consume_dialog_title),
-                dialogText = stringResource(id = R.string.consume_dialog_msg),
-                icon = Icons.Default.Warning
-            )
-        }
+                )
+            },
+            dialogTitle = stringResource(id = R.string.consume_dialog_title),
+            dialogText = stringResource(id = R.string.consume_dialog_msg),
+            icon = Icons.Default.Warning
+        )
+    }
 
-        if (updateResult != null) {
-            // いつかエラー処理分けしたい
-            navController?.popBackStack()
-        }
+    if (updateResult != null) {
+        // いつかエラー処理分けしたい
+        navController?.popBackStack()
     }
 }
 

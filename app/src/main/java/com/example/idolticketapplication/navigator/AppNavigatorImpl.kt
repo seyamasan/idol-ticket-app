@@ -10,6 +10,7 @@ import androidx.navigation.compose.composable
 import androidx.navigation.toRoute
 import com.example.idolticketapplication.MainActivityViewModel
 import com.example.idolticketapplication.screens.Screens
+import com.example.idolticketapplication.ui.BuyView
 import com.example.idolticketapplication.ui.CheckConsumeTicketView
 import com.example.idolticketapplication.ui.EventDetailView
 import com.example.idolticketapplication.ui.EventListView
@@ -67,6 +68,16 @@ class AppNavigatorImpl (
                 EventDetailView(
                     navController = navController,
                     event = viewModel.eventListEntity!!
+                )
+            }
+
+            // BuyView
+            composable<Screens.BuyView> { backStackEntry ->
+                val buyView: Screens.BuyView = backStackEntry.toRoute()
+                BuyView(
+                    navController = navController,
+                    event = viewModel.eventListEntity!!,
+                    buy = buyView.buy
                 )
             }
         }

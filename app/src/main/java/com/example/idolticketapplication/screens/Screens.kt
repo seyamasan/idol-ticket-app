@@ -37,4 +37,9 @@ class Screens {
 
     @Serializable
     object EventDetailView
+
+    @Serializable
+    data class BuyView (
+        val buy: Int = 0
+    )
 }
