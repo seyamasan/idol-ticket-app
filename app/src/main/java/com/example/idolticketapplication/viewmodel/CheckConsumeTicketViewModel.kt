@@ -23,4 +23,8 @@ class CheckConsumeTicketViewModel(private val repository: OwnedTicketsRepository
             }
         }
     }
+
+    fun reset() {
+        _updateResult.value = null
+    }
 }

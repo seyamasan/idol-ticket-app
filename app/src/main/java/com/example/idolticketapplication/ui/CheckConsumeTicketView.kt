@@ -171,7 +171,10 @@ fun CheckConsumeTicketView(
 
     if (updateResult != null) {
         // いつかエラー処理分けしたい
+        viewModel.reset()
         navController?.popBackStack()
+    } else {
+        viewModel.reset()
     }
 }
 

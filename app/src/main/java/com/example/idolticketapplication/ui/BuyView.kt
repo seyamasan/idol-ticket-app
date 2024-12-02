@@ -212,8 +212,8 @@ fun BuyView(
         }
 
         if (eventListResult != null) {
-            viewModel.resetEventListResult()
             // いつかエラー処理分けしたい
+            viewModel.resetEventListResult()
             viewModel.insert(
                 OwnedTicketsEntity(
                     id = 0, // 自動的にIDを入れるときは0を入れる
@@ -234,9 +234,9 @@ fun BuyView(
         }
 
         if (ownedTicketsResult != null) {
-            viewModel.resetOwnedTicketsResult()
             // いつかエラー処理分けしたい
             // というか値をnullとかにしてあげないと画面遷移できるようになってしまう。
+            viewModel.resetOwnedTicketsResult()
             navController?.navigate(Screens.screenList.first())
         } else {
             viewModel.resetOwnedTicketsResult()
