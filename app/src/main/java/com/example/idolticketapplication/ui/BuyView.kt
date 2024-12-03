@@ -61,7 +61,8 @@ fun BuyView(
     viewModel: BuyViewModel = koinViewModel(),
     navController: NavHostController?,
     event: EventListEntity,
-    buy: Int
+    buy: Int,
+    onSuccess: () -> Unit
 ) {
     val eventListResult by viewModel.eventListResult.observeAsState(null)
     val ownedTicketsResult by viewModel.ownedTicketsResult.observeAsState(null)
@@ -237,7 +238,11 @@ fun BuyView(
             // いつかエラー処理分けしたい
             // というか値をnullとかにしてあげないと画面遷移できるようになってしまう。
             viewModel.resetOwnedTicketsResult()
-            navController?.navigate(Screens.screenList.first())
+            onSuccess()
+            navController?.popBackStack(
+                route = Screens.screenList.first(),
+                inclusive = false
+            )
         } else {
             viewModel.resetOwnedTicketsResult()
         }
@@ -383,7 +388,8 @@ fun BuyViewPreview() {
                 sold = 0,
                 enable = true
             ),
-            buy = 3
+            buy = 3,
+            onSuccess = {}
         )
     }
 }

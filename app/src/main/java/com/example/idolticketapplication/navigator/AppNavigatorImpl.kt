@@ -1,8 +1,15 @@
 package com.example.idolticketapplication.navigator
 
 import android.os.Build
+import android.util.Log
 import androidx.annotation.RequiresApi
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.DisposableEffect
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.saveable.rememberSaveable
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.res.stringResource
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
@@ -24,6 +31,8 @@ class AppNavigatorImpl (
     @RequiresApi(Build.VERSION_CODES.O)
     @Composable
     override fun NavigateTo() {
+        var buySuccess by rememberSaveable { mutableStateOf(false) }
+
         NavHost(
             navController = navController, Screens.screenList.first() // 初期表示画面
         ) {
@@ -56,29 +65,61 @@ class AppNavigatorImpl (
             // CheckConsumeTicketView
             composable<Screens.CheckConsumeTicketView> { backStackEntry ->
                 val checkConsumeTicketView: Screens.CheckConsumeTicketView = backStackEntry.toRoute()
-                CheckConsumeTicketView(
-                    navController = navController,
-                    ticket = viewModel.ownedTicketsEntity!!,
-                    consumption = checkConsumeTicketView.consumption
-                )
+                val ownedTicketsEntity = viewModel.ownedTicketsEntity
+                if (ownedTicketsEntity != null) {
+                    CheckConsumeTicketView(
+                        navController = navController,
+                        ticket = ownedTicketsEntity,
+                        consumption = checkConsumeTicketView.consumption
+                    )
+                } else {
+                    Log.e("Navigation", "OwnedTicketsEntity data is null")
+                }
+
+                // 画面が破棄されるタイミングで値をリセット
+                DisposableEffect(Unit) {
+                    onDispose {
+                        viewModel.ownedTicketsEntity = null
+                    }
+                }
             }
 
             // EventDetailView
             composable<Screens.EventDetailView> {
-                EventDetailView(
-                    navController = navController,
-                    event = viewModel.eventListEntity!!
-                )
+                val eventListEntity = viewModel.eventListEntity
+                if (eventListEntity != null) {
+                    EventDetailView(
+                        navController = navController,
+                        event = eventListEntity
+                    )
+                } else {
+                    Log.e("Navigation", "EventListEntity data is null")
+                }
             }
 
             // BuyView
             composable<Screens.BuyView> { backStackEntry ->
                 val buyView: Screens.BuyView = backStackEntry.toRoute()
-                BuyView(
-                    navController = navController,
-                    event = viewModel.eventListEntity!!,
-                    buy = buyView.buy
-                )
+                val eventListEntity = viewModel.eventListEntity
+                if (eventListEntity != null) {
+                    BuyView(
+                        navController = navController,
+                        event = viewModel.eventListEntity!!,
+                        buy = buyView.buy,
+                        onSuccess = { buySuccess = true }
+                    )
+                } else {
+                    Log.e("Navigation", "EventListEntity data is null")
+                }
+
+                DisposableEffect(Unit) {
+                    onDispose {
+                        if (buySuccess) {
+                            buySuccess = false
+                            viewModel.eventListEntity = null
+                        }
+                    }
+                }
             }
         }
     }

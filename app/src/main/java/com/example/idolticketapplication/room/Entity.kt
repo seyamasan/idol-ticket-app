@@ -1,13 +1,16 @@
 package com.example.idolticketapplication.room
 
 import android.os.Build
+import android.os.Parcelable
 import androidx.annotation.RequiresApi
 import androidx.room.ColumnInfo
 import androidx.room.Entity
 import androidx.room.PrimaryKey
+import kotlinx.parcelize.Parcelize
 import java.time.LocalDate
 import java.time.format.DateTimeFormatter
 
+@Parcelize
 @Entity(tableName = "owned_tickets_table")
 data class OwnedTicketsEntity (
     @PrimaryKey(autoGenerate = true) val id: Int,
@@ -21,7 +24,7 @@ data class OwnedTicketsEntity (
     @ColumnInfo(name = "detail") val detail: String,
     @ColumnInfo(name = "number_of_tickets") val numberOfTickets: Int,
     @ColumnInfo(name = "enable") val enable: Boolean
-) {
+) : Parcelable {
     // dateをLocalDateに変換するプロパティ
     val localDate: LocalDate
         @RequiresApi(Build.VERSION_CODES.O)
