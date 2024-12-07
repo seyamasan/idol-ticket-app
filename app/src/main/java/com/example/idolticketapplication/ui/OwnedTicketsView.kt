@@ -49,6 +49,7 @@ import androidx.navigation.NavHostController
 import com.example.idolticketapplication.R
 import com.example.idolticketapplication.room.OwnedTicketsEntity
 import com.example.idolticketapplication.screens.Screens
+import com.example.idolticketapplication.state.QuantityPickerState
 import com.example.idolticketapplication.ui.common.BottomNavBarView
 import com.example.idolticketapplication.ui.common.TicketCardView
 import com.example.idolticketapplication.ui.common.TopBarView
@@ -103,6 +104,7 @@ fun OwnedTicketsView(
                         ticketDate = it,
                         onClick = {
                             showBottomSheet = true
+                            viewModel.setQuantityPickerState(it)
                             selectedTicketData = it
                         }
                     )
@@ -113,6 +115,7 @@ fun OwnedTicketsView(
         if (showBottomSheet && selectedTicketData != null) {
             UseTheTicketSheet(
                 selectedTicketData = selectedTicketData!!,
+                state = viewModel.quantityPickerState,
                 onDismissRequest = {
                     showBottomSheet = false
                     selectedTicketData = null
@@ -131,12 +134,12 @@ fun OwnedTicketsView(
 @Composable
 private fun UseTheTicketSheet(
     selectedTicketData: OwnedTicketsEntity,
+    state: QuantityPickerState,
     onDismissRequest: () -> Unit,
     onConfirm: (Int) -> Unit
 ) {
     val coroutineScope = rememberCoroutineScope()
     val sheetState = rememberModalBottomSheetState(skipPartiallyExpanded = false)
-    var consumption by rememberSaveable { mutableIntStateOf(0) }
 
     ModalBottomSheet(
         sheetState = sheetState,
@@ -168,7 +171,7 @@ private fun UseTheTicketSheet(
                 onClick = {
                     coroutineScope.launch { sheetState.hide() }.invokeOnCompletion {
                         if (!sheetState.isVisible) {
-                            onConfirm(consumption)
+                            onConfirm(state.quantity)
                         }
                     }
                 }
@@ -202,7 +205,7 @@ private fun UseTheTicketSheet(
                         .padding(horizontal = 16.dp, vertical = 8.dp)
                 ) {
                     Text(
-                        text = consumption.toString(),
+                        text = state.quantity.toString(),
                         style = MaterialTheme.typography.bodyLarge.copy(fontSize = 96.sp),
                         color = MaterialTheme.colorScheme.onSurface
                     )
@@ -212,11 +215,8 @@ private fun UseTheTicketSheet(
                     verticalArrangement = Arrangement.spacedBy(16.dp)
                 ) {
                     IconButton(
-                        onClick = {
-                            if (consumption + 1 <= selectedTicketData.numberOfTickets) {
-                                consumption += 1
-                            }
-                        }
+                        enabled = !state.isMaxQuantity(),
+                        onClick = { state.increase() }
                     ) {
                         Icon(
                             imageVector = Icons.Default.Add,
@@ -230,11 +230,8 @@ private fun UseTheTicketSheet(
                     }
 
                     IconButton(
-                        onClick = {
-                            if (consumption - 1 >= 0) {
-                                consumption -= 1
-                            }
-                        }
+                        enabled = !state.isMinQuantity(),
+                        onClick = { state.decrease() }
                     ) {
                         Icon(
                             imageVector = Icons.Default.Remove,
