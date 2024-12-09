@@ -6,6 +6,7 @@ import com.example.idolticketapplication.room.repository.EventListRepository
 import com.example.idolticketapplication.room.repository.OwnedTicketsRepository
 import com.example.idolticketapplication.viewmodel.BuyViewModel
 import com.example.idolticketapplication.viewmodel.CheckConsumeTicketViewModel
+import com.example.idolticketapplication.viewmodel.EventDetailViewModel
 import com.example.idolticketapplication.viewmodel.EventListViewModel
 import com.example.idolticketapplication.viewmodel.OwnedTicketsViewModel
 import org.koin.android.ext.koin.androidContext
@@ -21,7 +22,6 @@ val idolTicketModule = module {
     single { EventListDataBase.buildDatabase(androidContext()).eventListDao() }
     single { EventListRepository(get()) }
     viewModel { EventListViewModel(get()) }
-
-    // 名前付きインスタンスを利用
     viewModel { BuyViewModel(ownedTicketsRepository = get(), eventListRepository = get()) }
+    viewModel { EventDetailViewModel() }
 }

@@ -34,6 +34,7 @@ import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.material3.rememberModalBottomSheetState
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.mutableStateOf
@@ -53,18 +54,27 @@ import androidx.navigation.NavHostController
 import com.example.idolticketapplication.R
 import com.example.idolticketapplication.room.EventListEntity
 import com.example.idolticketapplication.screens.Screens
+import com.example.idolticketapplication.state.QuantityPickerState
 import com.example.idolticketapplication.ui.common.EventStatusChipView
 import com.example.idolticketapplication.ui.common.TopBarView
 import com.example.idolticketapplication.ui.theme.IdolTicketApplicationTheme
+import com.example.idolticketapplication.viewmodel.EventDetailViewModel
+import com.example.idolticketapplication.viewmodel.OwnedTicketsViewModel
 import kotlinx.coroutines.launch
+import org.koin.androidx.compose.koinViewModel
 import java.util.Locale
 
 @Composable
 fun EventDetailView(
+    viewModel: EventDetailViewModel = koinViewModel(),
     navController: NavHostController?,
     event: EventListEntity
 ) {
     var showBottomSheet by rememberSaveable { mutableStateOf(false) }
+
+    LaunchedEffect(Unit) {
+        viewModel.setQuantityPickerState(event)
+    }
 
     Scaffold(
         containerColor = MaterialTheme.colorScheme.background,
@@ -196,6 +206,7 @@ fun EventDetailView(
         if (showBottomSheet) {
             BuyTheTicketSheet(
                 event = event,
+                state = viewModel.quantityPickerState,
                 onDismissRequest = { showBottomSheet = false },
                 onConfirm = {
                     showBottomSheet = false
@@ -210,12 +221,12 @@ fun EventDetailView(
 @Composable
 private fun BuyTheTicketSheet(
     event: EventListEntity,
+    state: QuantityPickerState,
     onDismissRequest: () -> Unit,
     onConfirm: (Int) -> Unit
 ) {
     val coroutineScope = rememberCoroutineScope()
     val sheetState = rememberModalBottomSheetState(skipPartiallyExpanded = false)
-    var buy by rememberSaveable { mutableIntStateOf(0) }
 
     ModalBottomSheet(
         sheetState = sheetState,
@@ -239,7 +250,7 @@ private fun BuyTheTicketSheet(
             ) {
                 Icon(
                     imageVector = Icons.Default.Close,
-                    contentDescription = "Check icon"
+                    contentDescription = "Default icon"
                 )
             }
 
@@ -247,7 +258,7 @@ private fun BuyTheTicketSheet(
                 onClick = {
                     coroutineScope.launch { sheetState.hide() }.invokeOnCompletion {
                         if (!sheetState.isVisible) {
-                            onConfirm(buy)
+                            onConfirm(state.quantity)
                         }
                     }
                 }
@@ -324,7 +335,7 @@ private fun BuyTheTicketSheet(
                         .padding(horizontal = 16.dp, vertical = 8.dp)
                 ) {
                     Text(
-                        text = buy.toString(),
+                        text = state.quantity.toString(),
                         style = MaterialTheme.typography.bodyLarge.copy(fontSize = 96.sp),
                         color = MaterialTheme.colorScheme.onSurface
                     )
@@ -334,11 +345,8 @@ private fun BuyTheTicketSheet(
                     verticalArrangement = Arrangement.spacedBy(16.dp)
                 ) {
                     IconButton(
-                        onClick = {
-                            if (buy + 1 <= event.stock) {
-                                buy += 1
-                            }
-                        }
+                        enabled = !state.isMaxQuantity(),
+                        onClick = { state.increase() }
                     ) {
                         Icon(
                             imageVector = Icons.Default.Add,
@@ -352,11 +360,8 @@ private fun BuyTheTicketSheet(
                     }
 
                     IconButton(
-                        onClick = {
-                            if (buy - 1 >= 0) {
-                                buy -= 1
-                            }
-                        }
+                        enabled = !state.isMinQuantity(),
+                        onClick = { state.decrease() }
                     ) {
                         Icon(
                             imageVector = Icons.Default.Remove,

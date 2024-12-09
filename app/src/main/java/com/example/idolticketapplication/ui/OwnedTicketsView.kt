@@ -163,7 +163,7 @@ private fun UseTheTicketSheet(
             ) {
                 Icon(
                     imageVector = Icons.Default.Close,
-                    contentDescription = "Check icon"
+                    contentDescription = "Close icon"
                 )
             }
 
