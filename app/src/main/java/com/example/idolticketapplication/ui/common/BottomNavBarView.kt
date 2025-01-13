@@ -24,8 +24,10 @@ fun BottomNavBarView(
                 label = { Text(stringResource(id = screenData.screenTitleResId)) },
                 selected = index == selectedTab,
                 onClick = {
-                    onSelectedTab(index)
-                    navController?.navigate(screenData)
+                    if (index != selectedTab) {
+                        onSelectedTab(index)
+                        navController?.navigate(screenData)
+                    }
                 }
             )
         }

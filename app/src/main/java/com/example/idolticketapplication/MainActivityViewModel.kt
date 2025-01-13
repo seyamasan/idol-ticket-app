@@ -8,4 +8,5 @@ class MainActivityViewModel : ViewModel() {
     var selectTab = 0
     var ownedTicketsEntity: OwnedTicketsEntity? = null
     var eventListEntity: EventListEntity? = null
+
 }
