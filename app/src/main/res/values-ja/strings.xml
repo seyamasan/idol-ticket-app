@@ -43,4 +43,12 @@
     <string name="buy_view_text_3">購入ボタンをタップしてください。</string>
     <string name="confirmation_of_details">購入チケットの詳細を確認する</string>
 
+<!--    CreateEventView-->
+    <string name="create_event_view_title">イベント作成</string>
+    <string name="create_event_button">作成</string>
+    <string name="date_and_time_section">日時</string>
+    <string name="create_event_data">日付</string>
+    <string name="create_event_start_time">開始</string>
+    <string name="create_event_end_time">終了</string>
+
 </resources>

@@ -34,7 +34,8 @@ fun TopBarView(
         title = {
             if (enableTitle) {
                 Box(
-                    modifier = Modifier.fillMaxWidth(),
+                    modifier = Modifier
+                        .fillMaxWidth(),
                     contentAlignment = Alignment.Center
                 ) {
                     Text(
@@ -53,7 +54,7 @@ fun TopBarView(
         navigationIcon = {
             if (enableBack) {
                 IconButton(onClick = { navController?.popBackStack() }) {
-                    Icon(Icons.AutoMirrored.Filled.KeyboardArrowLeft, contentDescription = "Back")
+                    Icon(Icons.AutoMirrored.Filled.KeyboardArrowLeft, contentDescription = "TopBarView Back")
                 }
             }
         }

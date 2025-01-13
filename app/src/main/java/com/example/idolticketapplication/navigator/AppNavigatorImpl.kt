@@ -19,6 +19,7 @@ import com.example.idolticketapplication.MainActivityViewModel
 import com.example.idolticketapplication.screens.Screens
 import com.example.idolticketapplication.ui.BuyView
 import com.example.idolticketapplication.ui.CheckConsumeTicketView
+import com.example.idolticketapplication.ui.CreateEventView
 import com.example.idolticketapplication.ui.EventDetailView
 import com.example.idolticketapplication.ui.EventListView
 import com.example.idolticketapplication.ui.OwnedTicketsView
@@ -120,6 +121,15 @@ class AppNavigatorImpl (
                         }
                     }
                 }
+            }
+
+            // CreateEventView
+            composable<Screens.CreateEventView> { backStackEntry ->
+                val createEventView: Screens.CreateEventView = backStackEntry.toRoute()
+                CreateEventView(
+                    navController = navController,
+                    screenTitle = stringResource(id = createEventView.screenTitleResId)
+                )
             }
         }
     }

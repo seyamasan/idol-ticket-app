@@ -18,8 +18,10 @@ import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.BrokenImage
+import androidx.compose.material.icons.filled.Edit
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.ElevatedCard
+import androidx.compose.material3.FloatingActionButton
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
@@ -76,6 +78,15 @@ fun EventListView(
                 selectedTab = selectedTab,
                 onSelectedTab = { onSelectedTab(it) }
             )
+        },
+        floatingActionButton = {
+            FloatingActionButton(
+                onClick = {
+                    navController?.navigate(Screens.createEventView)
+                }
+            ) {
+                Icon(Icons.Filled.Edit, "CreateEventView Floating Action Button")
+            }
         }
     ) { innerPadding ->
         Box(

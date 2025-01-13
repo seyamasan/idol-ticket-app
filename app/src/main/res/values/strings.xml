@@ -26,7 +26,7 @@
     <string name="consume_dialog_title">Do you really consume it?</string>
     <string name="consume_dialog_msg">If you perform this operation, you will be consuming the ticket.</string>
 
-    <!--    EventDetailView-->
+<!--    EventDetailView-->
     <string name="buy_now">Buy Now</string>
     <string name="support_buy_msg">Please select the number of copies you wish to purchase.</string>
     <string name="how_to_buy">How to buy</string>
@@ -42,5 +42,13 @@
     <string name="buy_view_text_2">After confirming,</string>
     <string name="buy_view_text_3">please tap the Buy button.</string>
     <string name="confirmation_of_details">Check the details of purchased tickets</string>
+
+<!--    CreateEventView-->
+    <string name="create_event_view_title">Event Creation</string>
+    <string name="create_event_button">Create</string>
+    <string name="date_and_time_section">Data and Time</string>
+    <string name="create_event_data">Data</string>
+    <string name="create_event_start_time">Start time</string>
+    <string name="create_event_end_time">End time</string>
 
 </resources>

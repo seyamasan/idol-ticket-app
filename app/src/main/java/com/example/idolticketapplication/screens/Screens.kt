@@ -18,6 +18,8 @@ class Screens {
             Icons.Filled.LocalActivity,
             Icons.Filled.Stadium
         )
+
+        val createEventView = CreateEventView()
     }
 
     @Serializable
@@ -42,4 +44,9 @@ class Screens {
     data class BuyView (
         val buy: Int = 0
     )
+
+    @Serializable
+    data class CreateEventView (
+        override val screenTitleResId: Int = R.string.create_event_view_title
+    ):ScreenData
 }
