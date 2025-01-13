@@ -150,6 +150,7 @@ fun TicketCardViewPreview() {
         TicketCardView(
             ticketDate = OwnedTicketsEntity(
                 id = 0,
+                ticketId = 0,
                 date = "2025/04/01",
                 startTime = "17:00",
                 endTime = "18:00",

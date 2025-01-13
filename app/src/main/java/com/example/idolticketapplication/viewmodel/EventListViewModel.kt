@@ -34,6 +34,7 @@ class EventListViewModel(private val repository: EventListRepository) : ViewMode
         viewModelScope.launch(Dispatchers.IO) {
             demoEvents.forEach { demo ->
                 val result = repository.insert(
+                    ticketId = demo.ticketId,
                     date = demo.date,
                     startTime = demo.startTime,
                     endTime = demo.endTime,

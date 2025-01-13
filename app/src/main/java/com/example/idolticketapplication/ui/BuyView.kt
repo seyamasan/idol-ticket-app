@@ -184,6 +184,7 @@ fun BuyView(
                         viewModel.update(
                             EventListEntity(
                                 id = event.sold,
+                                ticketId = event.ticketId,
                                 date = event.date,
                                 startTime = event.startTime,
                                 endTime = event.endTime,
@@ -218,6 +219,7 @@ fun BuyView(
             viewModel.insert(
                 OwnedTicketsEntity(
                     id = 0, // 自動的にIDを入れるときは0を入れる
+                    ticketId = event.ticketId,
                     date = event.date,
                     startTime = event.startTime,
                     endTime = event.endTime,
@@ -375,6 +377,7 @@ fun BuyViewPreview() {
             navController = null,
             event = EventListEntity(
                 id = 0,
+                ticketId = 0,
                 date = "2025/04/01",
                 startTime = "17:00",
                 endTime = "18:00",

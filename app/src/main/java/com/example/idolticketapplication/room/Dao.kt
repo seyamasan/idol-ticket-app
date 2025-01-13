@@ -16,6 +16,10 @@ interface OwnedTicketsDao {
     @Query("SELECT * FROM owned_tickets_table")
     suspend fun selectAll(): List<OwnedTicketsEntity>
 
+    // ticketIdで検索
+    @Query("SELECT * FROM owned_tickets_table WHERE ticketId = :ticketId AND event_name = :eventName")
+    suspend fun selectTicketIdAndEventName(ticketId: Int, eventName: String): OwnedTicketsEntity?
+
     @Query("DELETE FROM owned_tickets_table")
     suspend fun deleteAll()
 }

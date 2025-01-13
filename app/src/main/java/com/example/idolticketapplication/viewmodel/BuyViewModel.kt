@@ -34,8 +34,8 @@ class BuyViewModel(
 
     fun insert(ownedTicketsEntity: OwnedTicketsEntity) {
         viewModelScope.launch(Dispatchers.IO) {
-            // ここで重なり判定の処理を追加したほうがいい
             val result = ownedTicketsRepository.insert(
+                ticketId = ownedTicketsEntity.ticketId,
                 date = ownedTicketsEntity.date,
                 startTime = ownedTicketsEntity.startTime,
                 endTime = ownedTicketsEntity.endTime,

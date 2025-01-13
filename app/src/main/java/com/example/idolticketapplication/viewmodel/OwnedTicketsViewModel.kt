@@ -51,6 +51,7 @@ class OwnedTicketsViewModel(private val repository: OwnedTicketsRepository) : Vi
         viewModelScope.launch(Dispatchers.IO) {
             demoTickets.forEach { demo ->
                 val result = repository.insert(
+                    ticketId = demo.ticketId,
                     date = demo.date,
                     startTime = demo.startTime,
                     endTime = demo.endTime,

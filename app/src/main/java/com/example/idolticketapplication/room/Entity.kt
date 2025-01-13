@@ -14,6 +14,7 @@ import java.time.format.DateTimeFormatter
 @Entity(tableName = "owned_tickets_table")
 data class OwnedTicketsEntity (
     @PrimaryKey(autoGenerate = true) val id: Int,
+    @ColumnInfo(name = "ticketId") val ticketId: Int,
     @ColumnInfo(name = "date") val date: String,
     @ColumnInfo(name = "start_time") val startTime: String,
     @ColumnInfo(name = "end_time") val endTime: String,
@@ -38,6 +39,7 @@ data class OwnedTicketsEntity (
 @Entity(tableName = "event_list_table")
 data class EventListEntity (
     @PrimaryKey(autoGenerate = true) val id: Int,
+    @ColumnInfo(name = "ticketId") val ticketId: Int,
     @ColumnInfo(name = "date") val date: String,
     @ColumnInfo(name = "start_time") val startTime: String,
     @ColumnInfo(name = "end_time") val endTime: String,

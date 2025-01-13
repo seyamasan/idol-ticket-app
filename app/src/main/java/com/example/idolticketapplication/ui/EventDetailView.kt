@@ -36,7 +36,6 @@ import androidx.compose.material3.rememberModalBottomSheetState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.saveable.rememberSaveable
@@ -59,7 +58,6 @@ import com.example.idolticketapplication.ui.common.EventStatusChipView
 import com.example.idolticketapplication.ui.common.TopBarView
 import com.example.idolticketapplication.ui.theme.IdolTicketApplicationTheme
 import com.example.idolticketapplication.viewmodel.EventDetailViewModel
-import com.example.idolticketapplication.viewmodel.OwnedTicketsViewModel
 import kotlinx.coroutines.launch
 import org.koin.androidx.compose.koinViewModel
 import java.util.Locale
@@ -387,6 +385,7 @@ fun EventDetailViewPreview() {
             navController = null,
             event = EventListEntity(
                 id = 0,
+                ticketId = 0,
                 date = "2025/04/01",
                 startTime = "17:00",
                 endTime = "18:00",

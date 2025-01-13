@@ -1,7 +1,7 @@
 package com.example.idolticketapplication.data
 
 data class TicketData(
-    val id: Int,
+    val ticketId: Int,
     val date: String,
     val startTime: String,
     val endTime: String,
@@ -16,7 +16,7 @@ data class TicketData(
 
 var demoTickets = listOf(
     TicketData(
-        id = 0,
+        ticketId = 0,
         date = "2025/04/01",
         startTime = "17:00",
         endTime = "18:00",
@@ -29,7 +29,7 @@ var demoTickets = listOf(
         enable = true
     ),
     TicketData(
-        id = 1,
+        ticketId = 1,
         date = "2025/04/02",
         startTime = "18:00",
         endTime = "21:00",
@@ -42,7 +42,7 @@ var demoTickets = listOf(
         enable = true
     ),
     TicketData(
-        id = 2,
+        ticketId = 2,
         date = "2025/04/03",
         startTime = "17:00",
         endTime = "19:00",

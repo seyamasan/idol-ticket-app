@@ -12,6 +12,7 @@ class EventListRepository(private val eventListDao: EventListDao) {
     // DBにデータを保存
     suspend fun insert(
         date: String,
+        ticketId: Int,
         startTime: String,
         endTime: String,
         place: String,
@@ -28,6 +29,7 @@ class EventListRepository(private val eventListDao: EventListDao) {
             eventListDao.insert(
                 EventListEntity(
                     id = 0, // 自動的にIDを入れるときは0を入れる
+                    ticketId = ticketId,
                     date = date,
                     startTime = startTime,
                     endTime = endTime,

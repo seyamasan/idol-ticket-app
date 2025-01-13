@@ -150,6 +150,7 @@ fun CheckConsumeTicketView(
                 viewModel.update(
                     OwnedTicketsEntity(
                         id = ticket.id,
+                        ticketId = ticket.ticketId,
                         date = ticket.date,
                         startTime = ticket.startTime,
                         endTime = ticket.endTime,
@@ -186,6 +187,7 @@ fun CheckConsumeTicketViewPreview() {
             navController = null,
             ticket = OwnedTicketsEntity( // dummy
                 id = 0,
+                ticketId = 0,
                 date = "2025/04/01",
                 startTime = "17:00",
                 endTime = "18:00",
