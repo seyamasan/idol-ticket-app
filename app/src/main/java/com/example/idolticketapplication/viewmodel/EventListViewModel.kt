@@ -34,19 +34,22 @@ class EventListViewModel(private val repository: EventListRepository) : ViewMode
         viewModelScope.launch(Dispatchers.IO) {
             demoEvents.forEach { demo ->
                 val result = repository.insert(
-                    ticketId = demo.ticketId,
-                    date = demo.date,
-                    startTime = demo.startTime,
-                    endTime = demo.endTime,
-                    place = demo.place,
-                    eventName = demo.eventName,
-                    genre = demo.genre,
-                    idolName = demo.idolName,
-                    detail = demo.detail,
-                    price = demo.price,
-                    stock = demo.stock,
-                    sold = demo.sold,
-                    enable = demo.enable
+                    EventListEntity(
+                        id = 0, // 自動的にIDを入れるときは0を入れる
+                        ticketId = demo.ticketId,
+                        date = demo.date,
+                        startTime = demo.startTime,
+                        endTime = demo.endTime,
+                        place = demo.place,
+                        eventName = demo.eventName,
+                        genre = demo.genre,
+                        idolName = demo.idolName,
+                        detail = demo.detail,
+                        price = demo.price,
+                        stock = demo.stock,
+                        sold = demo.sold,
+                        enable = demo.enable
+                    )
                 )
                 if (result) {
                     print("Insert Success")

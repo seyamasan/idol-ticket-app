@@ -50,19 +50,49 @@ class OwnedTicketsViewModel(private val repository: OwnedTicketsRepository) : Vi
     fun insertDummyData() {
         viewModelScope.launch(Dispatchers.IO) {
             demoTickets.forEach { demo ->
-                val result = repository.insert(
+                val ticket = repository.selectTicketIdAndEventName(
                     ticketId = demo.ticketId,
-                    date = demo.date,
-                    startTime = demo.startTime,
-                    endTime = demo.endTime,
-                    place = demo.place,
-                    eventName = demo.eventName,
-                    genre = demo.genre,
-                    idolName = demo.idolName,
-                    detail = demo.detail,
-                    numberOfTickets = demo.numberOfTickets,
-                    enable = demo.enable
+                    eventName = demo.eventName
                 )
+                var result = false
+                ticket?.let { t ->
+                    // 持ってるならアップデート
+                    result = repository.update(
+                        OwnedTicketsEntity(
+                            id = t.id,
+                            ticketId = t.ticketId,
+                            date = t.date,
+                            startTime = t.startTime,
+                            endTime = t.endTime,
+                            place = t.place,
+                            eventName = t.eventName,
+                            genre = t.genre,
+                            idolName = t.idolName,
+                            detail = t.detail,
+                            numberOfTickets = t.numberOfTickets + demo.numberOfTickets,
+                            enable = t.enable
+                        )
+                    )
+                }?: run {
+                    // 持っていないならそのまま登録
+                    result = repository.insert(
+                        OwnedTicketsEntity(
+                            id = 0, // 自動的にIDを入れるときは0を入れる
+                            ticketId = demo.ticketId,
+                            date = demo.date,
+                            startTime = demo.startTime,
+                            endTime = demo.endTime,
+                            place = demo.place,
+                            eventName = demo.eventName,
+                            genre = demo.genre,
+                            idolName = demo.idolName,
+                            detail = demo.detail,
+                            numberOfTickets = demo.numberOfTickets,
+                            enable = demo.enable
+                        )
+                    )
+                }
+
                 if (result) {
                     print("Insert Success")
                 } else {

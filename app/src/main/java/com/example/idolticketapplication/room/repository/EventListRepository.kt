@@ -11,38 +11,11 @@ class EventListRepository(private val eventListDao: EventListDao) {
 
     // DBにデータを保存
     suspend fun insert(
-        date: String,
-        ticketId: Int,
-        startTime: String,
-        endTime: String,
-        place: String,
-        eventName: String,
-        genre: Int,
-        idolName: String,
-        detail: String,
-        price: Int,
-        stock: Int,
-        sold: Int,
-        enable: Boolean
+        eventListEntity: EventListEntity
     ): Boolean {
         return try {
             eventListDao.insert(
-                EventListEntity(
-                    id = 0, // 自動的にIDを入れるときは0を入れる
-                    ticketId = ticketId,
-                    date = date,
-                    startTime = startTime,
-                    endTime = endTime,
-                    place = place,
-                    eventName = eventName,
-                    genre = genre,
-                    idolName = idolName,
-                    detail = detail,
-                    price = price,
-                    stock = stock,
-                    sold = sold,
-                    enable = enable
-                )
+                eventListEntity
             )
             true
         } catch (e: Exception) {

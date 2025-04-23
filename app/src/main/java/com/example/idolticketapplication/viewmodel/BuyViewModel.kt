@@ -34,19 +34,48 @@ class BuyViewModel(
 
     fun insert(ownedTicketsEntity: OwnedTicketsEntity) {
         viewModelScope.launch(Dispatchers.IO) {
-            val result = ownedTicketsRepository.insert(
+            val ticket = ownedTicketsRepository.selectTicketIdAndEventName(
                 ticketId = ownedTicketsEntity.ticketId,
-                date = ownedTicketsEntity.date,
-                startTime = ownedTicketsEntity.startTime,
-                endTime = ownedTicketsEntity.endTime,
-                place = ownedTicketsEntity.place,
-                eventName = ownedTicketsEntity.eventName,
-                genre = ownedTicketsEntity.genre,
-                idolName = ownedTicketsEntity.idolName,
-                detail = ownedTicketsEntity.detail,
-                numberOfTickets = ownedTicketsEntity.numberOfTickets,
-                enable = ownedTicketsEntity.enable
+                eventName = ownedTicketsEntity.eventName
             )
+            var result = false
+            ticket?.let { t ->
+                // 持ってるならアップデート
+                result = ownedTicketsRepository.update(
+                    OwnedTicketsEntity(
+                        id = t.id,
+                        ticketId = t.ticketId,
+                        date = t.date,
+                        startTime = t.startTime,
+                        endTime = t.endTime,
+                        place = t.place,
+                        eventName = t.eventName,
+                        genre = t.genre,
+                        idolName = t.idolName,
+                        detail = t.detail,
+                        numberOfTickets = t.numberOfTickets + ownedTicketsEntity.numberOfTickets,
+                        enable = t.enable
+                    )
+                )
+            }?: run {
+                // 持っていないならそのまま登録
+                result = ownedTicketsRepository.insert(
+                    OwnedTicketsEntity(
+                        id = 0, // 自動的にIDを入れるときは0を入れる
+                        ticketId = ownedTicketsEntity.ticketId,
+                        date = ownedTicketsEntity.date,
+                        startTime = ownedTicketsEntity.startTime,
+                        endTime = ownedTicketsEntity.endTime,
+                        place = ownedTicketsEntity.place,
+                        eventName = ownedTicketsEntity.eventName,
+                        genre = ownedTicketsEntity.genre,
+                        idolName = ownedTicketsEntity.idolName,
+                        detail = ownedTicketsEntity.detail,
+                        numberOfTickets = ownedTicketsEntity.numberOfTickets,
+                        enable = ownedTicketsEntity.enable
+                    )
+                )
+            }
 
             withContext(Dispatchers.Main) {
                 _ownedTicketsResult.value = result
